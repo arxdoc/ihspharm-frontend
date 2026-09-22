@@ -1,0 +1,139 @@
+.menubar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: saturate(180%) blur(16px);
+  -webkit-backdrop-filter: saturate(180%) blur(16px);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.menubar-inner {
+  width: 100%;
+  padding: max(0.6rem, env(safe-area-inset-top)) clamp(1rem, 4vw, 2.5rem) 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.menubar-brand {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--white);
+  text-decoration: none;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.menubar-logo {
+  flex: 0 0 auto;
+  height: clamp(20px, 6vw, 28px);
+  width: auto;
+  object-fit: contain;
+}
+
+@media (max-width: 360px) {
+  .menubar-logo {
+    display: none;
+  }
+}
+
+.menubar-nav {
+  position: relative;
+  flex: 0 0 auto;
+  display: flex;
+  gap: 0.3rem;
+}
+
+.menubar-item {
+  display: contents;
+}
+
+.menubar-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  border: none;
+  background: transparent;
+  color: var(--blue);
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 600;
+  padding: 0.4rem 0.65rem;
+  border-radius: 999px;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.menubar-button.is-open,
+.menubar-button:active {
+  background: var(--press);
+}
+
+.menubar-caret {
+  font-size: 0.55rem;
+  transition: transform 0.15s ease;
+}
+
+.menubar-button.is-open .menubar-caret {
+  transform: rotate(180deg);
+}
+
+.menubar-dropdown {
+  position: absolute;
+  top: calc(100% + 0.4rem);
+  right: 0;
+  z-index: 31;
+  min-width: 200px;
+  max-width: calc(100vw - 2rem);
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px var(--shadow);
+  padding: 0.4rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.menubar-option {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.6rem 0.7rem;
+  border-radius: 8px;
+  color: var(--white);
+  font-size: 0.95rem;
+  text-decoration: none;
+}
+
+a.menubar-option:hover,
+a.menubar-option:active {
+  background: var(--press);
+}
+
+.menubar-option--disabled {
+  color: var(--text-muted);
+  cursor: default;
+}
+
+.menubar-option--disabled small {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.menubar-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  background: transparent;
+}

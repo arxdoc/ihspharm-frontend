@@ -1,0 +1,76 @@
+<header class="menubar">
+  <div class="menubar-inner">
+    <a class="menubar-brand" routerLink="/salas" (click)="cerrar()">
+      <img class="menubar-logo" src="logo.png" alt="" width="1091" height="434" />
+      IHS/Pharm
+    </a>
+
+    <nav class="menubar-nav" aria-label="Menú principal">
+      <div class="menubar-item">
+        <button
+          type="button"
+          class="menubar-button"
+          [class.is-open]="abierto() === 'ingresar'"
+          aria-haspopup="true"
+          [attr.aria-expanded]="abierto() === 'ingresar'"
+          (click)="alternar('ingresar')"
+        >
+          Ingresar
+          <span class="menubar-caret">▾</span>
+        </button>
+
+        @if (abierto() === 'ingresar') {
+          <div class="menubar-dropdown" role="menu">
+            <a class="menubar-option" role="menuitem" routerLink="/ingresar/plan" (click)="cerrar()">
+              Plan
+            </a>
+          </div>
+        }
+      </div>
+
+      <div class="menubar-item">
+        <button
+          type="button"
+          class="menubar-button"
+          [class.is-open]="abierto() === 'consultar'"
+          aria-haspopup="true"
+          [attr.aria-expanded]="abierto() === 'consultar'"
+          (click)="alternar('consultar')"
+        >
+          Consultar
+          <span class="menubar-caret">▾</span>
+        </button>
+
+        @if (abierto() === 'consultar') {
+          <div class="menubar-dropdown" role="menu">
+            <a class="menubar-option" role="menuitem" routerLink="/salas" (click)="cerrar()">
+              Salas
+            </a>
+            <span class="menubar-option menubar-option--disabled" role="menuitem" aria-disabled="true">
+              Pacientes
+              <small>Próximamente</small>
+            </span>
+            <span class="menubar-option menubar-option--disabled" role="menuitem" aria-disabled="true">
+              Planes
+              <small>Próximamente</small>
+            </span>
+            <span class="menubar-option menubar-option--disabled" role="menuitem" aria-disabled="true">
+              Requerimientos
+              <small>Próximamente</small>
+            </span>
+          </div>
+        }
+      </div>
+
+      <div class="menubar-item">
+        <a class="menubar-button" routerLink="/ihs-ai/chat" (click)="cerrar()">
+          IHS/AI
+        </a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+@if (abierto()) {
+  <div class="menubar-scrim" (click)="cerrar()"></div>
+}

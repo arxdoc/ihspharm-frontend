@@ -1,0 +1,56 @@
+<div class="ios-page">
+  <header class="ios-navbar">
+    <a class="ios-back" routerLink="/salas">‹ Salas</a>
+    <div class="ios-search">
+      <span class="ios-search-icon">⌕</span>
+      <input
+        type="search"
+        class="ios-search-input"
+        placeholder="Buscar por nombre o ID"
+        [ngModel]="busqueda()"
+        (ngModelChange)="busqueda.set($event)"
+      />
+    </div>
+    <h1 class="ios-title">Pacientes internados</h1>
+  </header>
+
+  @if (cargando()) {
+    <div class="ios-state">
+      <div class="ios-spinner"></div>
+      Cargando pacientes...
+    </div>
+  } @else if (error()) {
+    <p class="ios-state ios-state--error">{{ error() }}</p>
+  } @else {
+    <app-contexto-card [items]="contexto()" />
+    <app-indicadores-card [items]="indicadores()" />
+
+    <p class="ios-section-title">Pacientes</p>
+    <ul class="ios-list">
+      @for (paciente of pacientesFiltrados(); track paciente.id) {
+        <li>
+          <a
+            class="ios-row"
+            [routerLink]="['/salas', salaId(), 'pacientes', identificador(paciente)]"
+          >
+            <div class="ios-row-body">
+              <div class="ios-row-title">{{ nombreCompleto(paciente.name) }}</div>
+              <div class="ios-row-subtitle">
+                ID {{ identificador(paciente) }} · Nac. {{ paciente.birthDate ?? '-' }}
+              </div>
+            </div>
+            <span class="ios-badge">
+              {{ conteoPlanes()[paciente.id] ?? 0 }}
+              plan{{ (conteoPlanes()[paciente.id] ?? 0) === 1 ? '' : 'es' }}
+            </span>
+            <span class="ios-chevron">›</span>
+          </a>
+        </li>
+      } @empty {
+        <li class="ios-state">
+          {{ busqueda() ? 'Sin resultados para "' + busqueda() + '"' : 'Sin pacientes en esta sala' }}
+        </li>
+      }
+    </ul>
+  }
+</div>

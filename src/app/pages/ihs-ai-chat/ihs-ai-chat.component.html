@@ -1,0 +1,24 @@
+<div class="ios-page">
+  <div class="chat-mensajes">
+    @for (m of mensajes(); track $index) {
+      <div class="chat-burbuja">
+        <p class="chat-texto">{{ m.texto }}</p>
+        <span class="chat-hora">{{ m.hora }}</span>
+      </div>
+    } @empty {
+      <p class="ios-state">Escribí tu consulta abajo para empezar.</p>
+    }
+  </div>
+
+  <form class="chat-input-bar ios-compose" (ngSubmit)="enviar()">
+    <textarea
+      class="ios-textarea"
+      rows="1"
+      name="mensaje"
+      placeholder="Escribí tu consulta..."
+      [(ngModel)]="mensaje"
+      (keydown.enter)="onEnter($event)"
+    ></textarea>
+    <button type="submit" class="ios-send-btn" [disabled]="!mensaje.trim()">Enviar</button>
+  </form>
+</div>

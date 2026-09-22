@@ -1,0 +1,19 @@
+<div class="ios-page">
+  <header class="ios-navbar">
+    <a class="ios-back" [routerLink]="volverLink()">‹ Plan</a>
+    <h1 class="ios-title">Prescripción</h1>
+  </header>
+
+  @if (cargando()) {
+    <div class="ios-state">
+      <div class="ios-spinner"></div>
+      Cargando requerimiento...
+    </div>
+  } @else if (error()) {
+    <p class="ios-state ios-state--error">{{ error() }}</p>
+  } @else if (!requerimiento()) {
+    <p class="ios-state ios-state--error">No se encontró la prescripción {{ prescripcionId() }}.</p>
+  } @else {
+    <app-contexto-card [items]="contexto()" />
+  }
+</div>

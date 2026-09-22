@@ -1,0 +1,26 @@
+@if (items().length) {
+  <p class="ios-section-title" [class.ios-section-title--alerta]="alerta()">
+    @if (alerta()) {
+      <span class="alerta-icono" aria-hidden="true">⚠︎</span>
+    }
+    {{ titulo() }}
+  </p>
+  <ul class="ios-list">
+    @for (item of items(); track item.label) {
+      @if (item.link) {
+        <li>
+          <a class="ios-row" [routerLink]="item.link">
+            <span class="ios-row-label">{{ item.label }}</span>
+            <span class="ios-row-value ios-row-value--link">{{ item.valor }}</span>
+            <span class="ios-chevron">›</span>
+          </a>
+        </li>
+      } @else {
+        <li class="ios-row">
+          <span class="ios-row-label">{{ item.label }}</span>
+          <span class="ios-row-value">{{ item.valor }}</span>
+        </li>
+      }
+    }
+  </ul>
+}

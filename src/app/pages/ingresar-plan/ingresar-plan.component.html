@@ -1,0 +1,181 @@
+<div class="ios-page">
+  <header class="ios-navbar">
+    <a class="ios-back" routerLink="/salas">‹ Inicio</a>
+    <h1 class="ios-title">Nuevo plan de medicación</h1>
+    <p class="ios-subtitle">Se crea como transacción FHIR (List + MedicationRequest)</p>
+  </header>
+
+  @if (exito(); as ok) {
+    <div class="ios-state">
+      <p>Plan <strong>{{ ok.codigoPlan }}</strong> creado para el paciente {{ ok.pacienteCodigo }}.</p>
+      <div class="ios-form-actions">
+        <a class="ios-button ios-button--primary" routerLink="/salas">Volver a Salas</a>
+        <button class="ios-button ios-button--secondary" type="button" (click)="nuevoPlan()">
+          Cargar otro plan
+        </button>
+      </div>
+    </div>
+  } @else {
+    <form (ngSubmit)="enviar()" novalidate>
+      <p class="ios-section-title">Plan</p>
+      <ul class="ios-list">
+        <li class="ios-form-row">
+          <span class="ios-form-label">Código de plan</span>
+          <input
+            class="ios-form-input"
+            name="codigoPlan"
+            [(ngModel)]="codigoPlan"
+            placeholder="PMG-2026-000131"
+            required
+          />
+        </li>
+        <li class="ios-form-row ios-form-row--stacked">
+          <span class="ios-form-label">Título</span>
+          <input
+            class="ios-form-input"
+            name="titulo"
+            [(ngModel)]="titulo"
+            placeholder="Plan de medicación - Apellido, Nombre"
+            required
+          />
+        </li>
+        <li class="ios-form-row">
+          <span class="ios-form-label">Paciente (código)</span>
+          <input
+            class="ios-form-input"
+            name="pacienteCodigo"
+            [(ngModel)]="pacienteCodigo"
+            placeholder="517"
+            required
+          />
+        </li>
+      </ul>
+
+      <p class="ios-section-title">Profesional y fecha</p>
+      <ul class="ios-list">
+        <li class="ios-form-row">
+          <span class="ios-form-label">ID del profesional</span>
+          <input
+            class="ios-form-input"
+            name="profesionalId"
+            [(ngModel)]="profesionalId"
+            placeholder="dr-gomez-4521"
+            required
+          />
+        </li>
+        <li class="ios-form-row">
+          <span class="ios-form-label">Fecha y hora</span>
+          <input
+            class="ios-form-input"
+            type="datetime-local"
+            name="fecha"
+            [(ngModel)]="fecha"
+            required
+          />
+        </li>
+      </ul>
+
+      <p class="ios-section-title">Prescripciones</p>
+      @for (rx of prescripciones; track $index; let i = $index) {
+        <ul class="ios-list ios-list--spaced">
+          <li class="ios-form-row">
+            <span class="ios-form-label">Prescripción {{ i + 1 }}</span>
+            @if (prescripciones.length > 1) {
+              <button type="button" class="ios-inline-action" (click)="quitarPrescripcion(i)">
+                Quitar
+              </button>
+            }
+          </li>
+          <li class="ios-form-row">
+            <span class="ios-form-label">Código medicamento</span>
+            <input
+              class="ios-form-input"
+              [name]="'codMed' + i"
+              [(ngModel)]="rx.codigoMedicamento"
+              placeholder="MED-0015"
+              required
+            />
+          </li>
+          <li class="ios-form-row">
+            <span class="ios-form-label">Nombre medicamento</span>
+            <input
+              class="ios-form-input"
+              [name]="'nomMed' + i"
+              [(ngModel)]="rx.nombreMedicamento"
+              placeholder="Dexametasona"
+              required
+            />
+          </li>
+          <li class="ios-form-row">
+            <span class="ios-form-label">Dosis</span>
+            <input
+              class="ios-form-input"
+              type="number"
+              min="0"
+              step="any"
+              [name]="'dosisValor' + i"
+              [(ngModel)]="rx.dosisValor"
+              placeholder="4"
+              required
+            />
+          </li>
+          <li class="ios-form-row">
+            <span class="ios-form-label">Unidad</span>
+            <input
+              class="ios-form-input"
+              [name]="'dosisUnidad' + i"
+              [(ngModel)]="rx.dosisUnidad"
+              placeholder="mg"
+              required
+            />
+          </li>
+          <li class="ios-form-row">
+            <span class="ios-form-label">Cada cuántas horas</span>
+            <input
+              class="ios-form-input"
+              type="number"
+              min="1"
+              [name]="'horas' + i"
+              [(ngModel)]="rx.horas"
+              placeholder="12"
+              required
+            />
+          </li>
+          <li class="ios-form-row">
+            <span class="ios-form-label">Duración (días)</span>
+            <input
+              class="ios-form-input"
+              type="number"
+              min="1"
+              [name]="'dias' + i"
+              [(ngModel)]="rx.dias"
+              placeholder="3"
+              required
+            />
+          </li>
+        </ul>
+      }
+
+      <button type="button" class="ios-button ios-button--secondary" (click)="agregarPrescripcion()">
+        + Agregar prescripción
+      </button>
+
+      @if (error()) {
+        <p class="ios-state ios-state--error">{{ error() }}</p>
+      }
+
+      <button
+        type="submit"
+        class="ios-button ios-button--primary ios-form-submit"
+        [disabled]="enviando()"
+      >
+        @if (enviando()) {
+          <span class="ios-spinner ios-spinner--inline"></span>
+          Guardando...
+        } @else {
+          Guardar plan
+        }
+      </button>
+    </form>
+  }
+</div>

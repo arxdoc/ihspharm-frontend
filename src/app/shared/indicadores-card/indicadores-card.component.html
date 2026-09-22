@@ -1,0 +1,11 @@
+@if (items().length) {
+  <p class="ios-section-title">Indicadores</p>
+  <div class="metrics">
+    @for (item of items(); track item.label) {
+      <div class="metric">
+        <span class="metric-label">{{ item.label }}</span>
+        <span class="metric-value">{{ item.valor }}</span>
+      </div>
+    }
+  </div>
+}

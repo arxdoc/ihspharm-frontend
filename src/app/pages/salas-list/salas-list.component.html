@@ -1,0 +1,44 @@
+<div class="ios-page">
+  <header class="ios-navbar">
+    <div class="ios-search">
+      <span class="ios-search-icon">⌕</span>
+      <input
+        type="search"
+        class="ios-search-input"
+        placeholder="Buscar por nombre o código"
+        [ngModel]="busqueda()"
+        (ngModelChange)="busqueda.set($event)"
+      />
+    </div>
+    <h1 class="ios-title">Salas de internación</h1>
+  </header>
+
+  @if (cargando()) {
+    <div class="ios-state">
+      <div class="ios-spinner"></div>
+      Cargando salas...
+    </div>
+  } @else if (error()) {
+    <p class="ios-state ios-state--error">{{ error() }}</p>
+  } @else {
+    <app-indicadores-card [items]="indicadores()" />
+
+    <p class="ios-section-title">Salas</p>
+    <ul class="ios-list">
+      @for (sala of salasFiltradas(); track sala.id) {
+        <li>
+          <a class="ios-row" [routerLink]="['/salas', identificador(sala)]">
+            <div class="ios-row-body">
+              <div class="ios-row-title">{{ sala.name ?? '(sin nombre)' }}</div>
+            </div>
+            <span class="ios-chevron">›</span>
+          </a>
+        </li>
+      } @empty {
+        <li class="ios-state">
+          {{ busqueda() ? 'Sin resultados para "' + busqueda() + '"' : 'Sin salas' }}
+        </li>
+      }
+    </ul>
+  }
+</div>
